@@ -99,7 +99,8 @@ public:
   TBranch *b_nMultipleScatters;
 
   //SingleScatter
-  TBranch *b_nSingleScatters, *b_odPromptArea, *b_nODPromptPulses, *b_odPromptPulseIDs, *b_odDelayedAreas, *b_nODDelayedPulses, *b_odDelayedPulseIDs;
+  TBranch *b_nSingleScatters, *b_singlescatter_odPromptArea, *b_singlescatter_nODPromptPulses, *b_singlescatter_odPromptPulseIDs, *b_singlescatter_odDelayedAreas, *b_singlescatter_nODDelayedPulses, *b_singlescatter_odDelayedPulseIDs,
+    *b_singlescatter_energyER_keV, *b_singlescatter_energyNR_keV, *b_singlescatter_s1Area_phd, *b_singlescatter_s2Area_phd, *b_singlescatter_correctedS1Area_phd, *b_singlescatter_correctedS2Area_phd;
 
   //OD
   TBranch *b_nPulsesODLG, *b_singlePEprobability_ODLG, *b_multiplePEprobability_ODLG, *b_channelID_ODLG, *b_pulseStartTime_ns_ODLG, *b_pulseEndTime_ns_ODLG, 
@@ -107,11 +108,17 @@ public:
     *b_areaFractionTime5_ns_ODLG, *b_areaFractionTime25_ns_ODLG, *b_areaFractionTime50_ns_ODLG, *b_areaFractionTime75_ns_ODLG, *b_areaFractionTime95_ns_ODLG, *b_promptFraction50ns_ODLG, *b_rmsWidth_ns_ODLG, *b_coincidence_ODLG,
     *b_s1Probability_ODLG, *b_s2Probability_ODLG, *b_singleElectronProbability_ODLG, *b_otherProbability_ODLG, *b_otherS2Probability_ODLG;
 
-  //TPC
+  //TPC LG
   TBranch *b_nPulsesTPCLG, *b_singlePEprobability_TPCLG, *b_multiplePEprobability_TPCLG, *b_channelID_TPCLG, *b_pulseStartTime_ns_TPCLG, *b_pulseEndTime_ns_TPCLG, 
     *b_pulseArea_phd_TPCLG, *b_positiveArea_phd_TPCLG, *b_negativeArea_phd_TPCLG, *b_chPulseArea_phd_TPCLG, *b_chPeakTime_ns_TPCLG, *b_chPhotonCount_TPCLG, *b_photonCount_TPCLG, *b_peakAmp_TPCLG, *b_peakTime_ns_TPCLG,
     *b_areaFractionTime5_ns_TPCLG, *b_areaFractionTime25_ns_TPCLG, *b_areaFractionTime50_ns_TPCLG, *b_areaFractionTime75_ns_TPCLG, *b_areaFractionTime95_ns_TPCLG, *b_promptFraction50ns_TPCLG, *b_rmsWidth_ns_TPCLG, *b_coincidence_TPCLG,
     *b_s1Probability_TPCLG, *b_s2Probability_TPCLG, *b_singleElectronProbability_TPCLG, *b_otherProbability_TPCLG, *b_otherS2Probability_TPCLG;
+
+  //TPC HG
+  TBranch *b_nPulsesTPCHG, *b_singlePEprobability_TPCHG, *b_multiplePEprobability_TPCHG, *b_channelID_TPCHG, *b_pulseStartTime_ns_TPCHG, *b_pulseEndTime_ns_TPCHG, 
+    *b_pulseArea_phd_TPCHG, *b_positiveArea_phd_TPCHG, *b_negativeArea_phd_TPCHG, *b_chPulseArea_phd_TPCHG, *b_chPeakTime_ns_TPCHG, *b_chPhotonCount_TPCHG, *b_photonCount_TPCHG, *b_peakAmp_TPCHG, *b_peakTime_ns_TPCHG,
+    *b_areaFractionTime5_ns_TPCHG, *b_areaFractionTime25_ns_TPCHG, *b_areaFractionTime50_ns_TPCHG, *b_areaFractionTime75_ns_TPCHG, *b_areaFractionTime95_ns_TPCHG, *b_promptFraction50ns_TPCHG, *b_rmsWidth_ns_TPCHG, *b_coincidence_TPCHG,
+    *b_s1Probability_TPCHG, *b_s2Probability_TPCHG, *b_singleElectronProbability_TPCHG, *b_otherProbability_TPCHG, *b_otherS2Probability_TPCHG;
 
   //------------------------------------------------
   // Variable for extraction
@@ -121,10 +128,11 @@ public:
   
   //Single Scatter
   int nSingleScatters;
-  vector<float> odPromptArea;
-  vector<int> nODPromptPulses;
-  vector<vector<int>> odPromptPulseIDs, nODDelayedPulses;
-  vector<vector<float>> odDelayedAreas, odDelayedPulseIDs;
+  vector<float> singlescatter_odPromptArea;
+  vector<int> singlescatter_nODPromptPulses;
+  vector<vector<int>> singlescatter_odPromptPulseIDs, singlescatter_nODDelayedPulses; 
+  //  vector<vector<float>> singlescatter_odDelayedAreas, singlescatter_odDelayedPulseIDs, singlescatter_energyER_keV, singlescatter_energyNR_keV, singlescatter_s1Area_phd, singlescatter_s2Area_phd, singlescatter_correctedS1Area_phd, singlescatter_correctedS2Area_phd;
+  vector<float> singlescatter_odDelayedAreas, singlescatter_odDelayedPulseIDs, singlescatter_energyER_keV, singlescatter_energyNR_keV, singlescatter_s1Area_phd, singlescatter_s2Area_phd, singlescatter_correctedS1Area_phd, singlescatter_correctedS2Area_phd;
 
   //Event Header
   int eventID, nPulses_ODLG;
@@ -139,7 +147,7 @@ public:
   vector<vector<int>>   channelID_ODLG, chPeakTime_ns_ODLG, chPhotonCount_ODLG;
   vector<vector<float>> chPulseArea_phd_ODLG;
 
-  //TPC
+  //TPC LG
   int nPulses_TPCLG;
   vector<int> pulseStartTime_ns_TPCLG, pulseEndTime_ns_TPCLG, photonCount_TPCLG;
   vector<float> pulseArea_phd_TPCLG, positiveArea_phd_TPCLG, negativeArea_phd_TPCLG, peakAmp_TPCLG, promptFraction50ns_TPCLG, s1Probability_TPCLG, s2Probability_TPCLG, 
@@ -148,6 +156,16 @@ public:
     rmsWidth_ns_TPCLG, coincidence_TPCLG;
   vector<vector<int>>   channelID_TPCLG, chPeakTime_ns_TPCLG, chPhotonCount_TPCLG;
   vector<vector<float>> chPulseArea_phd_TPCLG;
+
+  //TPC HG
+  int nPulses_TPCHG;
+  vector<int> pulseStartTime_ns_TPCHG, pulseEndTime_ns_TPCHG, photonCount_TPCHG;
+  vector<float> pulseArea_phd_TPCHG, positiveArea_phd_TPCHG, negativeArea_phd_TPCHG, peakAmp_TPCHG, promptFraction50ns_TPCHG, s1Probability_TPCHG, s2Probability_TPCHG, 
+    singleElectronProbability_TPCHG, otherProbability_TPCHG, otherS2Probability_TPCHG, singlePEprobability_TPCHG, multiplePEprobability_TPCHG;
+  vector<int>  peakTime_ns_TPCHG, areaFractionTime5_ns_TPCHG, areaFractionTime25_ns_TPCHG, areaFractionTime50_ns_TPCHG, areaFractionTime75_ns_TPCHG, areaFractionTime95_ns_TPCHG,
+    rmsWidth_ns_TPCHG, coincidence_TPCHG;
+  vector<vector<int>>   channelID_TPCHG, chPeakTime_ns_TPCHG, chPhotonCount_TPCHG;
+  vector<vector<float>> chPulseArea_phd_TPCHG;
 
 
   // //define histos
@@ -177,12 +195,19 @@ void MyEvent::LoadBranches(TChain* tree)
 
   //Single Scatter
   chain->SetBranchAddress("singleScatters.nSingleScatters",       &nSingleScatters,                  &b_nSingleScatters);
-  chain->SetBranchAddress("singleScatters.odPromptArea",          &odPromptArea,                     &b_odPromptArea);
-  chain->SetBranchAddress("singleScatters.nODPromptPulses",       &nODPromptPulses,                  &b_nODPromptPulses);
-  chain->SetBranchAddress("singleScatters.odPromptPulseIDs",      &odPromptPulseIDs,                 &b_odPromptPulseIDs);
-  chain->SetBranchAddress("singleScatters.odDelayedAreas",        &odDelayedAreas,                   &b_odDelayedAreas);
-  chain->SetBranchAddress("singleScatters.nODDelayedPulses",      &nODDelayedPulses,                 &b_nODDelayedPulses);
-  chain->SetBranchAddress("singleScatters.odDelayedPulseIDs",     &odDelayedPulseIDs,                &b_odDelayedPulseIDs);
+  chain->SetBranchAddress("singleScatters.odPromptArea",          &singlescatter_odPromptArea,                     &b_singlescatter_odPromptArea);
+  chain->SetBranchAddress("singleScatters.nODPromptPulses",       &singlescatter_nODPromptPulses,                  &b_singlescatter_nODPromptPulses);
+  chain->SetBranchAddress("singleScatters.odPromptPulseIDs",      &singlescatter_odPromptPulseIDs,                 &b_singlescatter_odPromptPulseIDs);
+  chain->SetBranchAddress("singleScatters.odDelayedAreas",        &singlescatter_odDelayedAreas,                   &b_singlescatter_odDelayedAreas);
+  chain->SetBranchAddress("singleScatters.nODDelayedPulses",      &singlescatter_nODDelayedPulses,                 &b_singlescatter_nODDelayedPulses);
+  chain->SetBranchAddress("singleScatters.odDelayedPulseIDs",     &singlescatter_odDelayedPulseIDs,                &b_singlescatter_odDelayedPulseIDs);
+  chain->SetBranchAddress("singleScatters.energyER_keV",          &singlescatter_energyER_keV,                     &b_singlescatter_energyER_keV);
+  chain->SetBranchAddress("singleScatters.energyNR_keV",          &singlescatter_energyNR_keV,                     &b_singlescatter_energyNR_keV);
+  chain->SetBranchAddress("singleScatters.s1Area_phd",            &singlescatter_s1Area_phd,                       &b_singlescatter_s1Area_phd);
+  chain->SetBranchAddress("singleScatters.s2Area_phd",            &singlescatter_s2Area_phd,                       &b_singlescatter_s2Area_phd);
+  chain->SetBranchAddress("singleScatters.correctedS1Area_phd",   &singlescatter_correctedS1Area_phd,              &b_singlescatter_correctedS1Area_phd);
+  chain->SetBranchAddress("singleScatters.correctedS2Area_phd",   &singlescatter_correctedS2Area_phd,              &b_singlescatter_correctedS2Area_phd);
+  
 
   //OD
   chain->SetBranchAddress("eventHeader.triggerTimeStamp_ns",      &triggerTimeStamp_ns,              &b_triggerTimeStamp_ns);
@@ -215,7 +240,7 @@ void MyEvent::LoadBranches(TChain* tree)
   chain->SetBranchAddress("pulsesODLG.otherProbability",          &otherProbability_ODLG,            &b_otherProbability_ODLG);
   chain->SetBranchAddress("pulsesODLG.otherS2Probability",        &otherS2Probability_ODLG,          &b_otherS2Probability_ODLG);
 
-  //TPC
+  //TPC LG
   chain->SetBranchAddress("pulsesTPCLG.nPulses",                   &nPulses_TPCLG,                     &b_nPulsesTPCLG);
   chain->SetBranchAddress("pulsesTPCLG.singlePEprobability",       &singlePEprobability_TPCLG,         &b_singlePEprobability_TPCLG);
   //  chain->SetBranchAddress("pulsesTPCLG.multiplePEprobability",     &multiplePEprobability_TPCLG,       &b_multiplePEprobability_TPCLG);
@@ -245,6 +270,36 @@ void MyEvent::LoadBranches(TChain* tree)
   chain->SetBranchAddress("pulsesTPCLG.otherProbability",          &otherProbability_TPCLG,            &b_otherProbability_TPCLG);
   chain->SetBranchAddress("pulsesTPCLG.otherS2Probability",        &otherS2Probability_TPCLG,          &b_otherS2Probability_TPCLG);
 
+  //TPC LG
+  chain->SetBranchAddress("pulsesTPCHG.nPulses",                   &nPulses_TPCHG,                     &b_nPulsesTPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.singlePEprobability",       &singlePEprobability_TPCHG,         &b_singlePEprobability_TPCHG);
+  //  chain->SetBranchAddress("pulsesTPCHG.multiplePEprobability",     &multiplePEprobability_TPCHG,       &b_multiplePEprobability_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.chID",                      &channelID_TPCHG,                   &b_channelID_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.pulseStartTime_ns",         &pulseStartTime_ns_TPCHG,           &b_pulseStartTime_ns_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.pulseEndTime_ns",           &pulseEndTime_ns_TPCHG,             &b_pulseEndTime_ns_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.pulseArea_phd",             &pulseArea_phd_TPCHG,               &b_pulseArea_phd_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.positiveArea_phd",          &positiveArea_phd_TPCHG,            &b_positiveArea_phd_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.negativeArea_phd",          &negativeArea_phd_TPCHG,            &b_negativeArea_phd_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.chPulseArea_phd",           &chPulseArea_phd_TPCHG,             &b_chPulseArea_phd_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.chPeakTime_ns",             &chPeakTime_ns_TPCHG,               &b_chPeakTime_ns_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.chPhotonCount",             &chPhotonCount_TPCHG,               &b_chPhotonCount_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.photonCount",               &photonCount_TPCHG,                 &b_photonCount_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.peakAmp",                   &peakAmp_TPCHG,                     &b_peakAmp_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.peakTime_ns",               &peakTime_ns_TPCHG,                 &b_peakTime_ns_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.areaFractionTime5_ns",      &areaFractionTime5_ns_TPCHG,        &b_areaFractionTime5_ns_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.areaFractionTime25_ns",     &areaFractionTime25_ns_TPCHG,       &b_areaFractionTime25_ns_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.areaFractionTime50_ns",     &areaFractionTime50_ns_TPCHG,       &b_areaFractionTime50_ns_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.areaFractionTime75_ns",     &areaFractionTime75_ns_TPCHG,       &b_areaFractionTime75_ns_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.areaFractionTime95_ns",     &areaFractionTime95_ns_TPCHG,       &b_areaFractionTime95_ns_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.promptFraction50ns",        &promptFraction50ns_TPCHG,          &b_promptFraction50ns_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.rmsWidth_ns",               &rmsWidth_ns_TPCHG,                 &b_rmsWidth_ns_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.coincidence",               &coincidence_TPCHG,                 &b_coincidence_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.s1Probability",             &s1Probability_TPCHG,               &b_s1Probability_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.s2Probability",             &s2Probability_TPCHG,               &b_s2Probability_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.singleElectronProbability", &singleElectronProbability_TPCHG,   &b_singleElectronProbability_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.otherProbability",          &otherProbability_TPCHG,            &b_otherProbability_TPCHG);
+  chain->SetBranchAddress("pulsesTPCHG.otherS2Probability",        &otherS2Probability_TPCHG,          &b_otherS2Probability_TPCHG);
+
 
 }
 
@@ -262,12 +317,19 @@ void MyEvent::GetEntry(const int n)
 
   //SingleScatter
   b_nSingleScatters                   ->GetEntry(ientry);
-  b_odPromptArea                      ->GetEntry(ientry);
-  b_nODPromptPulses                   ->GetEntry(ientry);
-  b_odPromptPulseIDs                  ->GetEntry(ientry);
-  b_odDelayedAreas                    ->GetEntry(ientry);
-  b_nODDelayedPulses                  ->GetEntry(ientry);
-  b_odDelayedPulseIDs                 ->GetEntry(ientry);
+  b_singlescatter_odPromptArea                      ->GetEntry(ientry);
+  b_singlescatter_nODPromptPulses                   ->GetEntry(ientry);
+  b_singlescatter_odPromptPulseIDs                  ->GetEntry(ientry);
+  b_singlescatter_odDelayedAreas                    ->GetEntry(ientry);
+  b_singlescatter_nODDelayedPulses                  ->GetEntry(ientry);
+  b_singlescatter_odDelayedPulseIDs                 ->GetEntry(ientry);
+  b_singlescatter_energyER_keV                      ->GetEntry(ientry);
+  b_singlescatter_energyNR_keV                      ->GetEntry(ientry);
+  b_singlescatter_s1Area_phd                        ->GetEntry(ientry);
+  b_singlescatter_s2Area_phd                        ->GetEntry(ientry);
+  b_singlescatter_correctedS1Area_phd               ->GetEntry(ientry);
+  b_singlescatter_correctedS2Area_phd               ->GetEntry(ientry);
+
 
 
   //OD
@@ -300,7 +362,7 @@ void MyEvent::GetEntry(const int n)
   b_otherProbability_ODLG             ->GetEntry(ientry);
   b_otherS2Probability_ODLG           ->GetEntry(ientry);
 
-  //TPC
+  //TPC  LG
   b_nPulsesTPCLG                        ->GetEntry(ientry);
   b_singlePEprobability_TPCLG          ->GetEntry(ientry);
   //  b_multiplePEprobability_TPCLG        ->GetEntry(ientry);
@@ -329,6 +391,36 @@ void MyEvent::GetEntry(const int n)
   b_singleElectronProbability_TPCLG    ->GetEntry(ientry);
   b_otherProbability_TPCLG             ->GetEntry(ientry);
   b_otherS2Probability_TPCLG           ->GetEntry(ientry);
+
+  //TPC  HG
+  b_nPulsesTPCHG                        ->GetEntry(ientry);
+  b_singlePEprobability_TPCHG          ->GetEntry(ientry);
+  //  b_multiplePEprobability_TPCHG        ->GetEntry(ientry);
+  b_channelID_TPCHG                    ->GetEntry(ientry);
+  b_pulseStartTime_ns_TPCHG            ->GetEntry(ientry);
+  b_pulseEndTime_ns_TPCHG              ->GetEntry(ientry);
+  b_pulseArea_phd_TPCHG                ->GetEntry(ientry);
+  b_positiveArea_phd_TPCHG             ->GetEntry(ientry);
+  b_negativeArea_phd_TPCHG             ->GetEntry(ientry);
+  b_chPulseArea_phd_TPCHG              ->GetEntry(ientry);
+  b_chPeakTime_ns_TPCHG                ->GetEntry(ientry);
+  b_chPhotonCount_TPCHG                ->GetEntry(ientry);
+  b_photonCount_TPCHG                  ->GetEntry(ientry);
+  b_peakAmp_TPCHG                      ->GetEntry(ientry);
+  b_peakTime_ns_TPCHG                  ->GetEntry(ientry);
+  b_areaFractionTime5_ns_TPCHG         ->GetEntry(ientry);
+  b_areaFractionTime25_ns_TPCHG        ->GetEntry(ientry);
+  b_areaFractionTime50_ns_TPCHG        ->GetEntry(ientry);
+  b_areaFractionTime75_ns_TPCHG        ->GetEntry(ientry);
+  b_areaFractionTime95_ns_TPCHG        ->GetEntry(ientry);
+  b_promptFraction50ns_TPCHG           ->GetEntry(ientry);
+  b_rmsWidth_ns_TPCHG                  ->GetEntry(ientry);
+  b_coincidence_TPCHG                  ->GetEntry(ientry);
+  b_s1Probability_TPCHG                ->GetEntry(ientry); 
+  b_s2Probability_TPCHG                 ->GetEntry(ientry);
+  b_singleElectronProbability_TPCHG    ->GetEntry(ientry);
+  b_otherProbability_TPCHG             ->GetEntry(ientry);
+  b_otherS2Probability_TPCHG           ->GetEntry(ientry);
 }
 
 

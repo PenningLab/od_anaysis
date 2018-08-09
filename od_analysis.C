@@ -52,10 +52,10 @@ void od_analysis(){
   clock->Start();
 
 
-  //TString sample="background";
+  TString sample="background";
   //TString sample="NA22";
   //TString sample="Kr83";
-  TString sample="AmLi";
+  //  TString sample="AmLi";
   TString outname  = sample+".root";
   TString txtFileList = "RQfile.list."+sample;
   
@@ -150,9 +150,6 @@ void od_analysis(){
   //for position reconstruction
   bool map_done=0;
   TH2F* h_map=new TH2F("map","map",20, 0.5,20.5, 6,0.5,6.5);
-  // TH2F* h_z_phd=new TH2F("z_phd","z_phid",6,0.5,6.5, 200,0,1000);
-  // TH2F* h_i_phd=new TH2F("i_phd","i_phid",20, 0.5,20.5, 200,0,1000);
-  // TH2F* h_i_z=new TH2F("i_z","i_z", 20, -10, 10, 6, -3,3);
 
   TH2F* h_npulses_phd=new TH2F("npulses_phd","npulses_phd",100, 9, 130, 50,0,100);
   TH2F* h_chPktime_phd=new TH2F("chPktime_phd","chPktime_phd",200, 0, 1000, 200, 0, 100);
@@ -218,202 +215,204 @@ void od_analysis(){
     sum_pulse_time+=duration;
     h_pulse_duration_ms_ODLG->Fill(duration/1E6); //fill in ms
 
-    //*****************
-    // OD Low gain
-    //*****************
-    bool started_filling=0;
-    number_of_pulses+=evt->nPulses_ODLG;
-    h_nPulses_ODLG->Fill(evt->nPulses_ODLG);
-    float all_chPulseArea_phd=0;
-    float all_chPhotonCount_phd=0;
     
-    //BP play with scatter
-    // if( evt->nSingleScatters !=0 ){
-    //   cout<<"nMultipleScatters "<<evt->nMultipleScatters <<" nSingleScatters "<< evt->nSingleScatters<<endl;
-    //   cout<<"number of pulses in OD: "<<evt->nODPromptPulses[0]<<endl;
-    //   //      cout<<"number of delayed pulses in OD: "<<evt->nODDelayedPulses[0]<<endl;
-    // }
+    //*****************
+    // TPC High Gain
+    //*****************
+
     
-    // if( evt->nSingleScatters !=1 )        
-    //   continue;
-
-    for(int i=0; i<evt->nPulses_ODLG; ++i){
-      duration = 0;
-      h_pulseArea_phd_ODLG->Fill(evt->pulseArea_phd_ODLG[i]);
-      h_photonCount_ODLG->Fill(evt->photonCount_ODLG[i]);
-      h_pulseStartTime_ns_ODLG->Fill(evt->pulseStartTime_ns_ODLG[i]);
-      h_pulseEndTime_ns_ODLG->Fill(evt->pulseEndTime_ns_ODLG[i]);
-      h_peakAmp_ODLG->Fill(evt->peakAmp_ODLG[i]);
-      h_peakTime_ns_ODLG->Fill(evt->peakTime_ns_ODLG[i]);
-      h_areaFractionTime5_ns_ODLG->Fill(evt->areaFractionTime5_ns_ODLG[i]);
-      h_areaFractionTime25_ns_ODLG->Fill(evt->areaFractionTime25_ns_ODLG[i]);
-      h_areaFractionTime50_ns_ODLG->Fill(evt->areaFractionTime50_ns_ODLG[i]);
-      h_areaFractionTime75_ns_ODLG->Fill(evt->areaFractionTime75_ns_ODLG[i]);
-      h_areaFractionTime95_ns_ODLG->Fill(evt->areaFractionTime95_ns_ODLG[i]);
-      h_promptFraction50ns_ODLG->Fill(evt->promptFraction50ns_ODLG[i]);
-      h_rmsWidth_ns_ODLG->Fill(evt->rmsWidth_ns_ODLG[i]);
-      h_coincidence_ODLG->Fill(evt->coincidence_ODLG[i]);
-      h_s1Probability_ODLG->Fill(evt->s1Probability_ODLG[i]);
-      h_s2Probability_ODLG->Fill(evt->s2Probability_ODLG[i]);
-      h_singlePEprobability_ODLG->Fill(evt->singlePEprobability_ODLG[i]);
-      h_singleElectronProbability_ODLG->Fill(evt->singlePEprobability_ODLG[i]);
-      h_otherProbability_ODLG->Fill(evt->otherProbability_ODLG[i]);
-      h_otherS2Probability_ODLG->Fill(evt->otherS2Probability_ODLG[i]);
-
-
-      for (unsigned int ii=0; ii<evt->chPulseArea_phd_ODLG[i].size(); ii++) {
-	h_channelID_ODLG->Fill(evt->channelID_ODLG[i][ii]-1000);
-	int pmtid =(evt->channelID_ODLG[i][ii])-1801;
-	hvec_chPulseArea_phd_ODLG.at(pmtid)->Fill(evt->chPulseArea_phd_ODLG[i][ii]);
-
-	if (!map_done && evt->eventID==8) {
-	  h_map->SetBinContent(pmtid/6+1, pmtid%6+1, ( h_map->GetBinContent(pmtid/6+1, pmtid%6+1) + evt->chPulseArea_phd_ODLG[i][ii]));
-	  started_filling=true;
-	}
-	//	if(evt->chPulseArea_phd_ODLG[i][ii]>3 && evt->multiplePEprobability_TPCLG[i]==1){
-	if(evt->chPulseArea_phd_ODLG[i][ii]>3){
-	  all_chPulseArea_phd+=evt->chPulseArea_phd_ODLG[i][ii];
-	  h_chPulseArea_phd_ODLG->Fill(evt->chPulseArea_phd_ODLG[i][ii]);
-	  h_chPeakTime_ns_ODLG->Fill(evt->chPeakTime_ns_ODLG[i][ii]);
-	}
-      }//run over phd channels
-
-      //now try to find where the light actually is //bp
-      float max_area_phd=0;
-      float max_so_far=0;
-      int max_area_phd_pmt=-1;
-      if (evt->chPulseArea_phd_ODLG[i].size()<5) continue;
-      for (unsigned int ii=0; ii<evt->chPulseArea_phd_ODLG[i].size(); ii++) {
-	int pmtid =(evt->channelID_ODLG[i][ii])-1801;
-	//	if(evt->chPulseArea_phd_ODLG[i][ii]>3){
-	  max_so_far=evt->chPulseArea_phd_ODLG[i][ii];
-	  //	}
-	if(max_area_phd<=max_so_far) {
-	  max_area_phd=max_so_far;
-	  max_area_phd_pmt=pmtid;
-	}
-	//      cout<<"ii "<<ii<<", phd: "<<evt->chPulseArea_phd_ODLG[i][ii] << ", ID: "<< (evt->channelID_ODLG[i][ii])-1801<<", z: "<<pmtid%6+1 << ", l: "<<pmtid/6+1<<endl;
-      }
-      //      cout<<" max_area_phd_pmt :"<<max_area_phd_pmt<<", max_area_phd: "<<max_area_phd<<endl;
-      
-      //if (evt->chPulseArea_phd_ODLG[i].size()<10) continue;
-      for (unsigned int ii=0; ii<evt->chPulseArea_phd_ODLG[i].size(); ii++) {
-	int pmtid =(evt->channelID_ODLG[i][ii])-1801;
-	//if (pmtid==max_area_phd_pmt) continue;
-	// float pmtid_z=pmtid%6+1;
-	// float pmtid_i=pmtid/6+1;
-	// float max_pmt_z=max_area_phd_pmt%6+1;
-	// float max_pmt_i=max_area_phd_pmt/6+1;
-	float pmtid_z=(pmtid%6+1)*77+25;
-	float pmtid_i=(pmtid/6+1)*18+9;
-	float max_pmt_z=(max_area_phd_pmt%6+1)*77+25;
-	float max_pmt_i=(max_area_phd_pmt/6+1)*18+9;
-
-	//cout<<" pmtid: "<<pmtid<<", max pmt id: "<<max_area_phd_pmt<<", pmtid_z:"<<pmtid_z<<", max_pmt_z: "<<max_pmt_z<<"/"<<pmtid%6+1<<", diff:"<<max_pmt_z-pmtid_z<<"/"<<max_area_phd_pmt%6+1<<endl;
-
-	h_npulses_phd->Fill(evt->chPulseArea_phd_ODLG[i].size(), evt->chPulseArea_phd_ODLG[i][ii]);
-	h_chPktime_phd->Fill(evt->chPeakTime_ns_ODLG[i][ii], evt->chPulseArea_phd_ODLG[i][ii]);
-	h_dz_phd->Fill(max_pmt_z-pmtid_z, evt->chPulseArea_phd_ODLG[i][ii]);
-	h_dphi_phd->Fill(max_pmt_i-pmtid_i, evt->chPulseArea_phd_ODLG[i][ii]);
-	h_dphi_dz->Fill(max_pmt_i-pmtid_i, max_pmt_z-pmtid_z);
-	//	if ( evt->chPulseArea_phd_ODLG[i][ii]>3 )
-	  //  cout<<"event ID "<< evt->eventID << " ii "<<ii<<", phd: "<<evt->chPulseArea_phd_ODLG[i][ii] << ", ID: "<< (evt->channelID_ODLG[i][ii])-1801<<endl; //BP
-	//	cout<<"ii "<<ii<<", phd: "<<evt->chPulseArea_phd_ODLG[i][ii] << ", ID: "<< (evt->channelID_ODLG[i][ii])-1801<<", dz: "<<max_pmt_z-pmtid_z << ", dl: "<<max_pmt_i-pmtid_i<<endl;
-      }
+    if(evt->nSingleScatters>0){
+      if (evt->nSingleScatters>1) cout<<"WARNING, nSingleScatters>1"<<endl;
+      cout<<" s1 "<<evt->singlescatter_s1Area_phd[0]<<endl;
+      cout<<" s2 "<<evt->singlescatter_s2Area_phd[0]<<endl;
+      cout<<" s1corr "<<evt->singlescatter_correctedS1Area_phd[0]<<endl;
+      cout<<" s2corr "<<evt->singlescatter_correctedS2Area_phd[0]<<endl;
+    }
+    
+    
+	// s1  = singleScatter_s1Area_phd[0];
+      // 	s2  = singleScatter_s2Area_phd[0];
+      // 	s1c = singleScatter_correctedS1Area_phd[0];
+      // 	s2c = singleScatter_correctedS2Area_phd[0];
+      // 	x   = singleScatter_x_cm[0];
+      // 	y   = singleScatter_y_cm[0];
+      // 	R2  = x*x+y*y;
+      // 	isInteraction= true;
+      // }else{
+      // 	s1  = -1;
+      // 	s2  = -1;
+      // 	s1c = -1;
+      // 	s2c = -1;
+      // 	x   = -1;
+      // 	y   = -1;
+      // 	R2  = -1;
+      // 	isInteraction = false;
+      // }
       
 
-      //end position reco
+    
+    
+  //   //*****************
+  //   // OD Low gain
+  //   //*****************
+  //   bool started_filling=0;
+  //   number_of_pulses+=evt->nPulses_ODLG;
+  //   h_nPulses_ODLG->Fill(evt->nPulses_ODLG);
+  //   float all_chPulseArea_phd=0;
+  //   float all_chPhotonCount_phd=0;
+    
+    
+  //   for(int i=0; i<evt->nPulses_ODLG; ++i){
+  //     duration = 0;
+  //     h_pulseArea_phd_ODLG->Fill(evt->pulseArea_phd_ODLG[i]);
+  //     h_photonCount_ODLG->Fill(evt->photonCount_ODLG[i]);
+  //     h_pulseStartTime_ns_ODLG->Fill(evt->pulseStartTime_ns_ODLG[i]);
+  //     h_pulseEndTime_ns_ODLG->Fill(evt->pulseEndTime_ns_ODLG[i]);
+  //     h_peakAmp_ODLG->Fill(evt->peakAmp_ODLG[i]);
+  //     h_peakTime_ns_ODLG->Fill(evt->peakTime_ns_ODLG[i]);
+  //     h_areaFractionTime5_ns_ODLG->Fill(evt->areaFractionTime5_ns_ODLG[i]);
+  //     h_areaFractionTime25_ns_ODLG->Fill(evt->areaFractionTime25_ns_ODLG[i]);
+  //     h_areaFractionTime50_ns_ODLG->Fill(evt->areaFractionTime50_ns_ODLG[i]);
+  //     h_areaFractionTime75_ns_ODLG->Fill(evt->areaFractionTime75_ns_ODLG[i]);
+  //     h_areaFractionTime95_ns_ODLG->Fill(evt->areaFractionTime95_ns_ODLG[i]);
+  //     h_promptFraction50ns_ODLG->Fill(evt->promptFraction50ns_ODLG[i]);
+  //     h_rmsWidth_ns_ODLG->Fill(evt->rmsWidth_ns_ODLG[i]);
+  //     h_coincidence_ODLG->Fill(evt->coincidence_ODLG[i]);
+  //     h_s1Probability_ODLG->Fill(evt->s1Probability_ODLG[i]);
+  //     h_s2Probability_ODLG->Fill(evt->s2Probability_ODLG[i]);
+  //     h_singlePEprobability_ODLG->Fill(evt->singlePEprobability_ODLG[i]);
+  //     h_singleElectronProbability_ODLG->Fill(evt->singlePEprobability_ODLG[i]);
+  //     h_otherProbability_ODLG->Fill(evt->otherProbability_ODLG[i]);
+  //     h_otherS2Probability_ODLG->Fill(evt->otherS2Probability_ODLG[i]);
 
-      duration+=evt->pulseEndTime_ns_ODLG[i]-evt->pulseStartTime_ns_ODLG[i];
-      h_pulse_area_width_ODLG->Fill(evt->pulseArea_phd_ODLG[i], evt->pulseEndTime_ns_ODLG[i]-evt->pulseStartTime_ns_ODLG[i]);
-      h_pulse_start_area_ODLG->Fill(evt->pulseStartTime_ns_ODLG[i], evt->pulseArea_phd_ODLG[i]);
-    }//Pulses
-    if ( started_filling ) map_done=1;
-    h_pulseArea_phd_ODLG_sum->Fill(all_chPulseArea_phd);
-    //    h_pulse_area_width_ODLG->Fill(all_chPulseArea_phd, duration);
 
-    //*****************
-    // TPC Low gain
-    //*****************
-    number_of_pulses+=evt->nPulses_TPCLG;
-    h_nPulses_TPCLG->Fill(evt->nPulses_TPCLG);
-    all_chPulseArea_phd=0;
-    all_chPhotonCount_phd=0;
-    for(int i=0; i<evt->nPulses_TPCLG; ++i){
-      duration = 0;
-      h_pulseArea_phd_TPCLG->Fill(evt->pulseArea_phd_TPCLG[i]);
-      h_photonCount_TPCLG->Fill(evt->photonCount_TPCLG[i]);
-      h_pulseStartTime_ns_TPCLG->Fill(evt->pulseStartTime_ns_TPCLG[i]);
-      h_pulseEndTime_ns_TPCLG->Fill(evt->pulseEndTime_ns_TPCLG[i]);
-      h_peakAmp_TPCLG->Fill(evt->peakAmp_TPCLG[i]);
-      h_peakTime_ns_TPCLG->Fill(evt->peakTime_ns_TPCLG[i]);
-      h_areaFractionTime5_ns_TPCLG->Fill(evt->areaFractionTime5_ns_TPCLG[i]);
-      h_areaFractionTime25_ns_TPCLG->Fill(evt->areaFractionTime25_ns_TPCLG[i]);
-      h_areaFractionTime50_ns_TPCLG->Fill(evt->areaFractionTime50_ns_TPCLG[i]);
-      h_areaFractionTime75_ns_TPCLG->Fill(evt->areaFractionTime75_ns_TPCLG[i]);
-      h_areaFractionTime95_ns_TPCLG->Fill(evt->areaFractionTime95_ns_TPCLG[i]);
-      h_promptFraction50ns_TPCLG->Fill(evt->promptFraction50ns_TPCLG[i]);
-      h_rmsWidth_ns_TPCLG->Fill(evt->rmsWidth_ns_TPCLG[i]);
-      h_coincidence_TPCLG->Fill(evt->coincidence_TPCLG[i]);
-      h_s1Probability_TPCLG->Fill(evt->s1Probability_TPCLG[i]);
-      h_s2Probability_TPCLG->Fill(evt->s2Probability_TPCLG[i]);
-      h_singlePEprobability_TPCLG->Fill(evt->singlePEprobability_TPCLG[i]);
-      h_singleElectronProbability_TPCLG->Fill(evt->singlePEprobability_TPCLG[i]);
-      h_otherProbability_TPCLG->Fill(evt->otherProbability_TPCLG[i]);
-      h_otherS2Probability_TPCLG->Fill(evt->otherS2Probability_TPCLG[i]);
+  //     for (unsigned int ii=0; ii<evt->chPulseArea_phd_ODLG[i].size(); ii++) {
+  // 	h_channelID_ODLG->Fill(evt->channelID_ODLG[i][ii]-1000);
+  // 	int pmtid =(evt->channelID_ODLG[i][ii])-1801;
+  // 	hvec_chPulseArea_phd_ODLG.at(pmtid)->Fill(evt->chPulseArea_phd_ODLG[i][ii]);
 
-      for (unsigned int ii=0; ii<evt->chPulseArea_phd_TPCLG[i].size(); ii++) {
-	h_channelID_TPCLG->Fill(evt->channelID_TPCLG[i][ii]-1000);
-	// int pmtid =(evt->channelID_TPCLG[i][ii])-100;
-	// hvec_chPulseArea_phd_TPCLG.at(pmtid)->Fill(evt->chPulseArea_phd_TPCLG[i][ii]);
-	if(evt->chPulseArea_phd_TPCLG[i][ii]>3){
-	  all_chPulseArea_phd+=evt->chPulseArea_phd_TPCLG[i][ii];
-	  h_chPulseArea_phd_TPCLG->Fill(evt->chPulseArea_phd_TPCLG[i][ii]);
-	  h_chPeakTime_ns_TPCLG->Fill(evt->chPeakTime_ns_TPCLG[i][ii]);
-	}
-      }//run over phd channels
-      duration+=evt->pulseEndTime_ns_TPCLG[i]-evt->pulseStartTime_ns_TPCLG[i];
-      h_pulse_area_width_TPCLG->Fill(evt->pulseArea_phd_TPCLG[i], evt->pulseEndTime_ns_TPCLG[i]-evt->pulseStartTime_ns_TPCLG[i]);
-      h_pulse_start_area_TPCLG->Fill(evt->pulseStartTime_ns_TPCLG[i], evt->pulseArea_phd_TPCLG[i]);
-    }//Pulses TPC
-    h_pulseArea_phd_TPCLG_sum->Fill(all_chPulseArea_phd);
+  // 	if (!map_done && evt->eventID==8) {
+  // 	  h_map->SetBinContent(pmtid/6+1, pmtid%6+1, ( h_map->GetBinContent(pmtid/6+1, pmtid%6+1) + evt->chPulseArea_phd_ODLG[i][ii]));
+  // 	  started_filling=true;
+  // 	}
+  // 	//	if(evt->chPulseArea_phd_ODLG[i][ii]>3 && evt->multiplePEprobability_TPCLG[i]==1){
+  // 	if(evt->chPulseArea_phd_ODLG[i][ii]>3){
+  // 	  all_chPulseArea_phd+=evt->chPulseArea_phd_ODLG[i][ii];
+  // 	  h_chPulseArea_phd_ODLG->Fill(evt->chPulseArea_phd_ODLG[i][ii]);
+  // 	  h_chPeakTime_ns_ODLG->Fill(evt->chPeakTime_ns_ODLG[i][ii]);
+  // 	}
+  //     }//run over phd channels
+
+  //     //now try to find where the light actually is //bp
+  //     float max_area_phd=0;
+  //     float max_so_far=0;
+  //     int max_area_phd_pmt=-1;
+  //     if (evt->chPulseArea_phd_ODLG[i].size()<5) continue;
+  //     for (unsigned int ii=0; ii<evt->chPulseArea_phd_ODLG[i].size(); ii++) {
+  // 	int pmtid =(evt->channelID_ODLG[i][ii])-1801;
+  // 	//	if(evt->chPulseArea_phd_ODLG[i][ii]>3){
+  // 	  max_so_far=evt->chPulseArea_phd_ODLG[i][ii];
+  // 	  //	}
+  // 	if(max_area_phd<=max_so_far) {
+  // 	  max_area_phd=max_so_far;
+  // 	  max_area_phd_pmt=pmtid;
+  // 	}
+  // 	//      cout<<"ii "<<ii<<", phd: "<<evt->chPulseArea_phd_ODLG[i][ii] << ", ID: "<< (evt->channelID_ODLG[i][ii])-1801<<", z: "<<pmtid%6+1 << ", l: "<<pmtid/6+1<<endl;
+  //     }
+  //     //      cout<<" max_area_phd_pmt :"<<max_area_phd_pmt<<", max_area_phd: "<<max_area_phd<<endl;
+      
+  //     //if (evt->chPulseArea_phd_ODLG[i].size()<10) continue;
+  //     for (unsigned int ii=0; ii<evt->chPulseArea_phd_ODLG[i].size(); ii++) {
+  // 	int pmtid =(evt->channelID_ODLG[i][ii])-1801;
+  // 	//if (pmtid==max_area_phd_pmt) continue;
+  // 	// float pmtid_z=pmtid%6+1;
+  // 	// float pmtid_i=pmtid/6+1;
+  // 	// float max_pmt_z=max_area_phd_pmt%6+1;
+  // 	// float max_pmt_i=max_area_phd_pmt/6+1;
+  // 	float pmtid_z=(pmtid%6+1)*77+25;
+  // 	float pmtid_i=(pmtid/6+1)*18+9;
+  // 	float max_pmt_z=(max_area_phd_pmt%6+1)*77+25;
+  // 	float max_pmt_i=(max_area_phd_pmt/6+1)*18+9;
+
+  // 	//cout<<" pmtid: "<<pmtid<<", max pmt id: "<<max_area_phd_pmt<<", pmtid_z:"<<pmtid_z<<", max_pmt_z: "<<max_pmt_z<<"/"<<pmtid%6+1<<", diff:"<<max_pmt_z-pmtid_z<<"/"<<max_area_phd_pmt%6+1<<endl;
+
+  // 	h_npulses_phd->Fill(evt->chPulseArea_phd_ODLG[i].size(), evt->chPulseArea_phd_ODLG[i][ii]);
+  // 	h_chPktime_phd->Fill(evt->chPeakTime_ns_ODLG[i][ii], evt->chPulseArea_phd_ODLG[i][ii]);
+  // 	h_dz_phd->Fill(max_pmt_z-pmtid_z, evt->chPulseArea_phd_ODLG[i][ii]);
+  // 	h_dphi_phd->Fill(max_pmt_i-pmtid_i, evt->chPulseArea_phd_ODLG[i][ii]);
+  // 	h_dphi_dz->Fill(max_pmt_i-pmtid_i, max_pmt_z-pmtid_z);
+  // 	//	if ( evt->chPulseArea_phd_ODLG[i][ii]>3 )
+  // 	  //  cout<<"event ID "<< evt->eventID << " ii "<<ii<<", phd: "<<evt->chPulseArea_phd_ODLG[i][ii] << ", ID: "<< (evt->channelID_ODLG[i][ii])-1801<<endl; //BP
+  // 	//	cout<<"ii "<<ii<<", phd: "<<evt->chPulseArea_phd_ODLG[i][ii] << ", ID: "<< (evt->channelID_ODLG[i][ii])-1801<<", dz: "<<max_pmt_z-pmtid_z << ", dl: "<<max_pmt_i-pmtid_i<<endl;
+  //     }
+      
+
+  //     //end position reco
+
+  //     duration+=evt->pulseEndTime_ns_ODLG[i]-evt->pulseStartTime_ns_ODLG[i];
+  //     h_pulse_area_width_ODLG->Fill(evt->pulseArea_phd_ODLG[i], evt->pulseEndTime_ns_ODLG[i]-evt->pulseStartTime_ns_ODLG[i]);
+  //     h_pulse_start_area_ODLG->Fill(evt->pulseStartTime_ns_ODLG[i], evt->pulseArea_phd_ODLG[i]);
+  //   }//Pulses
+  //   if ( started_filling ) map_done=1;
+  //   h_pulseArea_phd_ODLG_sum->Fill(all_chPulseArea_phd);
+  //   //    h_pulse_area_width_ODLG->Fill(all_chPulseArea_phd, duration);
+
+  //   //*****************
+  //   // TPC Low gain
+  //   //*****************
+  //   number_of_pulses+=evt->nPulses_TPCLG;
+  //   h_nPulses_TPCLG->Fill(evt->nPulses_TPCLG);
+  //   all_chPulseArea_phd=0;
+  //   all_chPhotonCount_phd=0;
+  //   for(int i=0; i<evt->nPulses_TPCLG; ++i){
+  //     duration = 0;
+  //     h_pulseArea_phd_TPCLG->Fill(evt->pulseArea_phd_TPCLG[i]);
+  //     h_photonCount_TPCLG->Fill(evt->photonCount_TPCLG[i]);
+  //     h_pulseStartTime_ns_TPCLG->Fill(evt->pulseStartTime_ns_TPCLG[i]);
+  //     h_pulseEndTime_ns_TPCLG->Fill(evt->pulseEndTime_ns_TPCLG[i]);
+  //     h_peakAmp_TPCLG->Fill(evt->peakAmp_TPCLG[i]);
+  //     h_peakTime_ns_TPCLG->Fill(evt->peakTime_ns_TPCLG[i]);
+  //     h_areaFractionTime5_ns_TPCLG->Fill(evt->areaFractionTime5_ns_TPCLG[i]);
+  //     h_areaFractionTime25_ns_TPCLG->Fill(evt->areaFractionTime25_ns_TPCLG[i]);
+  //     h_areaFractionTime50_ns_TPCLG->Fill(evt->areaFractionTime50_ns_TPCLG[i]);
+  //     h_areaFractionTime75_ns_TPCLG->Fill(evt->areaFractionTime75_ns_TPCLG[i]);
+  //     h_areaFractionTime95_ns_TPCLG->Fill(evt->areaFractionTime95_ns_TPCLG[i]);
+  //     h_promptFraction50ns_TPCLG->Fill(evt->promptFraction50ns_TPCLG[i]);
+  //     h_rmsWidth_ns_TPCLG->Fill(evt->rmsWidth_ns_TPCLG[i]);
+  //     h_coincidence_TPCLG->Fill(evt->coincidence_TPCLG[i]);
+  //     h_s1Probability_TPCLG->Fill(evt->s1Probability_TPCLG[i]);
+  //     h_s2Probability_TPCLG->Fill(evt->s2Probability_TPCLG[i]);
+  //     h_singlePEprobability_TPCLG->Fill(evt->singlePEprobability_TPCLG[i]);
+  //     h_singleElectronProbability_TPCLG->Fill(evt->singlePEprobability_TPCLG[i]);
+  //     h_otherProbability_TPCLG->Fill(evt->otherProbability_TPCLG[i]);
+  //     h_otherS2Probability_TPCLG->Fill(evt->otherS2Probability_TPCLG[i]);
+
+  //     for (unsigned int ii=0; ii<evt->chPulseArea_phd_TPCLG[i].size(); ii++) {
+  // 	h_channelID_TPCLG->Fill(evt->channelID_TPCLG[i][ii]-1000);
+  // 	// int pmtid =(evt->channelID_TPCLG[i][ii])-100;
+  // 	// hvec_chPulseArea_phd_TPCLG.at(pmtid)->Fill(evt->chPulseArea_phd_TPCLG[i][ii]);
+  // 	if(evt->chPulseArea_phd_TPCLG[i][ii]>3){
+  // 	  all_chPulseArea_phd+=evt->chPulseArea_phd_TPCLG[i][ii];
+  // 	  h_chPulseArea_phd_TPCLG->Fill(evt->chPulseArea_phd_TPCLG[i][ii]);
+  // 	  h_chPeakTime_ns_TPCLG->Fill(evt->chPeakTime_ns_TPCLG[i][ii]);
+  // 	}
+  //     }//run over phd channels
+  //     duration+=evt->pulseEndTime_ns_TPCLG[i]-evt->pulseStartTime_ns_TPCLG[i];
+  //     h_pulse_area_width_TPCLG->Fill(evt->pulseArea_phd_TPCLG[i], evt->pulseEndTime_ns_TPCLG[i]-evt->pulseStartTime_ns_TPCLG[i]);
+  //     h_pulse_start_area_TPCLG->Fill(evt->pulseStartTime_ns_TPCLG[i], evt->pulseArea_phd_TPCLG[i]);
+  //   }//Pulses TPC
+  //   h_pulseArea_phd_TPCLG_sum->Fill(all_chPulseArea_phd);
   }//int nevents
     
-  //--------------------------------------------------
-  // Convert to rate
-  //--------------------------------------------------
-  int count = 0;
-  unsigned long long time = 0;
-  unsigned long long time_day = 0;
-  double rate = 0;
-    //------------------------------------------------
-  // end event loop
-  //------------------------------------------------
-
 
   //write and close output file
   outfile->Write();
   outfile->Close();
 
-  std::cout<<"times_ns: "<<min_time_ns<<" "<<max_time_ns<<" "<<processed_events<<endl;
-  std::cout<<"summed time of all pulses "<<sum_pulse_time/1E9<<" sec"<<endl;
-  std::cout<<"Overall time "<<last_s-first_s <<" sec, rate: "<<processed_events/(last_s-first_s)<<" evts/sec"<<", pulse rate "<<number_of_pulses/(last_s-first_s) <<endl;
-  cout << "Done!"<<" "<<clock->RealTime()<<" s."<<endl;
-
-
-
-  //check time
-  evt->GetEntry(0);
-  double begin_s=evt->triggerTimeStamp_s;
-  evt->GetEntry(evt->chain->GetEntries()-1);
-  double end_s=evt->triggerTimeStamp_s;
-  std::cout<<" rate: "<<evt->chain->GetEntries()/(end_s-begin_s)<<" evt/sec"<<std::endl;
-
-
   delete chain;
   delete clock;
   
-}
+  }
 
 void load_chain(TString txtFileList, TChain* chain){
   cout << "Loading file names from "<<txtFileList << " into "<<chain->GetName()<<endl;
