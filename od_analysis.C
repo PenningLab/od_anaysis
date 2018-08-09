@@ -220,36 +220,23 @@ void od_analysis(){
     // TPC High Gain
     //*****************
 
-    
-    if(evt->nSingleScatters>0){
-      if (evt->nSingleScatters>1) cout<<"WARNING, nSingleScatters>1"<<endl;
-      cout<<" s1 "<<evt->singlescatter_s1Area_phd[0]<<endl;
-      cout<<" s2 "<<evt->singlescatter_s2Area_phd[0]<<endl;
-      cout<<" s1corr "<<evt->singlescatter_correctedS1Area_phd[0]<<endl;
-      cout<<" s2corr "<<evt->singlescatter_correctedS2Area_phd[0]<<endl;
-    }
-    
-    
-	// s1  = singleScatter_s1Area_phd[0];
-      // 	s2  = singleScatter_s2Area_phd[0];
-      // 	s1c = singleScatter_correctedS1Area_phd[0];
-      // 	s2c = singleScatter_correctedS2Area_phd[0];
-      // 	x   = singleScatter_x_cm[0];
-      // 	y   = singleScatter_y_cm[0];
-      // 	R2  = x*x+y*y;
-      // 	isInteraction= true;
-      // }else{
-      // 	s1  = -1;
-      // 	s2  = -1;
-      // 	s1c = -1;
-      // 	s2c = -1;
-      // 	x   = -1;
-      // 	y   = -1;
-      // 	R2  = -1;
-      // 	isInteraction = false;
-      // }
-      
+    // cout<<"single "<<evt->nSingleScatters<<endl;
+    // cout<<"mult   "<<evt->nMultipleScatters<<endl;
+    if (evt->nMultipleScatters>0) cout<<"mult   "<<evt->nMultipleScatters<<" "<<evt->multiplescatter_s1Area_phd.size()<<endl;
+    if (evt->nSingleScatters>0) cout<<"sing     "<<evt->nSingleScatters<<" "<<evt->singlescatter_s1Area_phd.size()<<endl;
 
+    
+    // if(evt->nSingleScatters>0){
+    //   if (evt->nSingleScatters>1) cout<<"WARNING, nSingleScatters>1"<<endl;
+    //   cout<<" s1 "<<evt->singlescatter_s1Area_phd[0]<<endl;
+    //   cout<<" s2 "<<evt->singlescatter_s2Area_phd[0]<<endl;
+    //   cout<<" x "<<evt->singlescatter_x_cm[0]<<endl;
+    //   cout<<" y "<<evt->singlescatter_y_cm[0]<<endl;
+
+    // }
+    
+    
+    
     
     
   //   //*****************

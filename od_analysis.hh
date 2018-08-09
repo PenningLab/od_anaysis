@@ -97,10 +97,11 @@ public:
 
   //MultipleScatter
   TBranch *b_nMultipleScatters;
+  TBranch *b_multiplescatter_s1Area_phd;
 
   //SingleScatter
   TBranch *b_nSingleScatters, *b_singlescatter_odPromptArea, *b_singlescatter_nODPromptPulses, *b_singlescatter_odPromptPulseIDs, *b_singlescatter_odDelayedAreas, *b_singlescatter_nODDelayedPulses, *b_singlescatter_odDelayedPulseIDs,
-    *b_singlescatter_energyER_keV, *b_singlescatter_energyNR_keV, *b_singlescatter_s1Area_phd, *b_singlescatter_s2Area_phd, *b_singlescatter_correctedS1Area_phd, *b_singlescatter_correctedS2Area_phd;
+    *b_singlescatter_energyER_keV, *b_singlescatter_energyNR_keV, *b_singlescatter_s1Area_phd, *b_singlescatter_s2Area_phd, *b_singlescatter_correctedS1Area_phd, *b_singlescatter_correctedS2Area_phd, *b_singlescatter_x_cm, *b_singlescatter_y_cm;
 
   //OD
   TBranch *b_nPulsesODLG, *b_singlePEprobability_ODLG, *b_multiplePEprobability_ODLG, *b_channelID_ODLG, *b_pulseStartTime_ns_ODLG, *b_pulseEndTime_ns_ODLG, 
@@ -124,7 +125,9 @@ public:
   // Variable for extraction
   //------------------------------------------------
 
+  //Multiple Scatter
   int nMultipleScatters;
+  vector<float> multiplescatter_s1Area_phd;
   
   //Single Scatter
   int nSingleScatters;
@@ -132,7 +135,7 @@ public:
   vector<int> singlescatter_nODPromptPulses;
   vector<vector<int>> singlescatter_odPromptPulseIDs, singlescatter_nODDelayedPulses; 
   //  vector<vector<float>> singlescatter_odDelayedAreas, singlescatter_odDelayedPulseIDs, singlescatter_energyER_keV, singlescatter_energyNR_keV, singlescatter_s1Area_phd, singlescatter_s2Area_phd, singlescatter_correctedS1Area_phd, singlescatter_correctedS2Area_phd;
-  vector<float> singlescatter_odDelayedAreas, singlescatter_odDelayedPulseIDs, singlescatter_energyER_keV, singlescatter_energyNR_keV, singlescatter_s1Area_phd, singlescatter_s2Area_phd, singlescatter_correctedS1Area_phd, singlescatter_correctedS2Area_phd;
+  vector<float> singlescatter_odDelayedAreas, singlescatter_odDelayedPulseIDs, singlescatter_energyER_keV, singlescatter_energyNR_keV, singlescatter_s1Area_phd, singlescatter_s2Area_phd, singlescatter_correctedS1Area_phd, singlescatter_correctedS2Area_phd, singlescatter_x_cm, singlescatter_y_cm;
 
   //Event Header
   int eventID, nPulses_ODLG;
@@ -191,7 +194,9 @@ void MyEvent::LoadBranches(TChain* tree)
 
   chain->SetBranchAddress("eventHeader.eventID",                  &eventID,                          &b_eventID);
   chain->SetBranchAddress("eventHeader.triggerTimeStamp_s",       &triggerTimeStamp_s,               &b_triggerTimeStamp_s);
+
   chain->SetBranchAddress("multipleScatters.nMultipleScatters",   &nMultipleScatters,                &b_nMultipleScatters);
+  chain->SetBranchAddress("multipleScatters.s1Area_phd",          &multiplescatter_s1Area_phd,       &b_multiplescatter_s1Area_phd);
 
   //Single Scatter
   chain->SetBranchAddress("singleScatters.nSingleScatters",       &nSingleScatters,                  &b_nSingleScatters);
@@ -207,6 +212,8 @@ void MyEvent::LoadBranches(TChain* tree)
   chain->SetBranchAddress("singleScatters.s2Area_phd",            &singlescatter_s2Area_phd,                       &b_singlescatter_s2Area_phd);
   chain->SetBranchAddress("singleScatters.correctedS1Area_phd",   &singlescatter_correctedS1Area_phd,              &b_singlescatter_correctedS1Area_phd);
   chain->SetBranchAddress("singleScatters.correctedS2Area_phd",   &singlescatter_correctedS2Area_phd,              &b_singlescatter_correctedS2Area_phd);
+  chain->SetBranchAddress("singleScatters.x_cm",                  &singlescatter_x_cm,                             &b_singlescatter_x_cm);
+  chain->SetBranchAddress("singleScatters.y_cm",                  &singlescatter_y_cm,                             &b_singlescatter_y_cm);
   
 
   //OD
@@ -313,7 +320,10 @@ void MyEvent::GetEntry(const int n)
   b_eventID                           ->GetEntry(ientry);
   b_triggerTimeStamp_s                ->GetEntry(ientry);
   b_triggerTimeStamp_ns               ->GetEntry(ientry);
+
+  //Mult Scatter
   b_nMultipleScatters                 ->GetEntry(ientry);
+  b_multiplescatter_s1Area_phd        ->GetEntry(ientry);
 
   //SingleScatter
   b_nSingleScatters                   ->GetEntry(ientry);
@@ -329,6 +339,8 @@ void MyEvent::GetEntry(const int n)
   b_singlescatter_s2Area_phd                        ->GetEntry(ientry);
   b_singlescatter_correctedS1Area_phd               ->GetEntry(ientry);
   b_singlescatter_correctedS2Area_phd               ->GetEntry(ientry);
+  b_singlescatter_x_cm                              ->GetEntry(ientry);
+  b_singlescatter_y_cm                              ->GetEntry(ientry);
 
 
 
