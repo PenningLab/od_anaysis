@@ -70,7 +70,12 @@ void od_analysis(){
 
   //define histos
   TH1D* h_singlescatter_s1Area_phd = new TH1D("singlescatter_s1Area_phd", "singlescatter_s1Area_phd", 10000, 0, 10000);
-
+  TH1D* h_multiplescatter_s1Area_phd = new TH1D("multiplescatter_s1Area_phd", "multiplescatter_s1Area_phd", 10000, 0, 10000);
+//  TH1D* h_doublescatter_s1Area_phd = new TH1D("doublescatter_s1Area_phd", "doublescatter_s1Area_phd", 10000, 0, 10000);
+//  TH1D* h_triplescatter_s1Area_phd = new TH1D("triplescatter_s1Area_phd", "triplescatter_s1Area_phd", 10000, 0, 10000);
+//  TH1D* h_quadscatter_s1Area_phd = new TH1D("quadscatter_s1Area_phd", "quadscatter_s1Area_phd", 10000, 0, 10000);
+//  TH1D* h_quintscatter_s1Area_phd = new TH1D("quintscatter_s1Area_phd", "quintscatter_s1Area_phd", 10000, 0, 10000);
+ 
 
   //------------------------------------------------
   // Main event loop
@@ -90,6 +95,9 @@ void od_analysis(){
       if (evt->nSingleScatters>1) cout<<"WARNING, nSingleScatters>1"<<endl;
       h_singlescatter_s1Area_phd->Fill(evt->singlescatter_s1Area_phd[0]);
     }
+   if(evt->nMultipleScatters>0){
+      if (evt->nMultipleScatters>1) cout<<"It's more than 1 in the nMultipleScatters"<<endl;
+      h_multiplscatter_s1Area_phd->Fill(evt->multiplescatter_s1Area_phd[0]);
   }//int nevents
     
 
