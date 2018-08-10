@@ -97,9 +97,9 @@ void od_analysis(){
     }
    if(evt->nMultipleScatters>0){
       if (evt->nMultipleScatters>1) cout<<"It's more than 1 in the nMultipleScatters"<<endl;
-      h_multiplscatter_s1Area_phd->Fill(evt->multiplescatter_s1Area_phd[0]);
+      h_multiplescatter_s1Area_phd->Fill(evt->multiplescatter_s1Area_phd[0]);
   }//int nevents
-    
+  }  
 
   //write and close output file
   outfile->Write();
