@@ -100,10 +100,17 @@ void od_analysis(){
       if (evt->nMultipleScatters>1) cout<<"It's more than 1 in the nMultipleScatters"<<endl;
       h_multiplescatter_s1Area_phd->Fill(evt->multiplescatter_s1Area_phd[0]);
     }//int nevents
-   cout<< evt->pulseStartTime_ns_TPCHG.size()<<endl;
-   h_pulsewidth_TPCHG->Fill((evt->pulseEndTime_ns_TPCHG) - (evt->pulseStartTime_ns_TPCHG[0]));
 
-
+  if ((evt->pulseStartTime_ns_TPCHG.size()) >= 1) {
+    int start = evt->pulseStartTime_ns_TPCHG[0];
+    int end = evt->pulseEndTime_ns_TPCHG[0];
+    int diff = end - start;
+//   cout<< evt->pulseStartTime_ns_TPCHG.size()<<endl;
+   h_pulsewidth_TPCHG->Fill(diff);
+//    cout << start << endl;
+//    cout << end << endl;
+//    cout << "" << endl;
+    }
 
 
   }  
