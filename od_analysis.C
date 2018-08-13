@@ -76,6 +76,7 @@ void od_analysis(){
 //  TH1D* h_quadscatter_s1Area_phd = new TH1D("quadscatter_s1Area_phd", "quadscatter_s1Area_phd", 10000, 0, 10000);
 //  TH1D* h_quintscatter_s1Area_phd = new TH1D("quintscatter_s1Area_phd", "quintscatter_s1Area_phd", 10000, 0, 10000);
  
+   TH1D* h_pulsewidth_TPCHG - new TH1D("pulsewidth_TPCHG","pulsewidth_TPCHG",10000,0,10000);
 
   //------------------------------------------------
   // Main event loop
@@ -98,7 +99,13 @@ void od_analysis(){
    if(evt->nMultipleScatters>0){
       if (evt->nMultipleScatters>1) cout<<"It's more than 1 in the nMultipleScatters"<<endl;
       h_multiplescatter_s1Area_phd->Fill(evt->multiplescatter_s1Area_phd[0]);
-  }//int nevents
+    }//int nevents
+   cout<< evt->pulseStartTime_ns_TPCHG.size()<<endl;
+   h-pulwidth_TPCHG->Fill((evt->pulseEndTime_ns_TPCHG) - (evt->pulseStartTime[0]));
+
+
+
+
   }  
 
   //write and close output file

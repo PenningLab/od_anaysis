@@ -277,7 +277,7 @@ void MyEvent::LoadBranches(TChain* tree)
   chain->SetBranchAddress("pulsesTPCLG.otherProbability",          &otherProbability_TPCLG,            &b_otherProbability_TPCLG);
   chain->SetBranchAddress("pulsesTPCLG.otherS2Probability",        &otherS2Probability_TPCLG,          &b_otherS2Probability_TPCLG);
 
-  //TPC LG
+  //TPC HG
   chain->SetBranchAddress("pulsesTPCHG.nPulses",                   &nPulses_TPCHG,                     &b_nPulsesTPCHG);
   chain->SetBranchAddress("pulsesTPCHG.singlePEprobability",       &singlePEprobability_TPCHG,         &b_singlePEprobability_TPCHG);
   //  chain->SetBranchAddress("pulsesTPCHG.multiplePEprobability",     &multiplePEprobability_TPCHG,       &b_multiplePEprobability_TPCHG);
