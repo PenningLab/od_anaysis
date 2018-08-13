@@ -76,7 +76,7 @@ void od_analysis(){
 //  TH1D* h_quadscatter_s1Area_phd = new TH1D("quadscatter_s1Area_phd", "quadscatter_s1Area_phd", 10000, 0, 10000);
 //  TH1D* h_quintscatter_s1Area_phd = new TH1D("quintscatter_s1Area_phd", "quintscatter_s1Area_phd", 10000, 0, 10000);
  
-   TH1D* h_pulsewidth_TPCHG - new TH1D("pulsewidth_TPCHG","pulsewidth_TPCHG",10000,0,10000);
+   TH1D* h_pulsewidth_TPCHG = new TH1D("pulsewidth_TPCHG","pulsewidth_TPCHG",10000,0,10000);
 
   //------------------------------------------------
   // Main event loop
@@ -101,7 +101,7 @@ void od_analysis(){
       h_multiplescatter_s1Area_phd->Fill(evt->multiplescatter_s1Area_phd[0]);
     }//int nevents
    cout<< evt->pulseStartTime_ns_TPCHG.size()<<endl;
-   h-pulwidth_TPCHG->Fill((evt->pulseEndTime_ns_TPCHG) - (evt->pulseStartTime[0]));
+   h_pulsewidth_TPCHG->Fill((evt->pulseEndTime_ns_TPCHG) - (evt->pulseStartTime_ns_TPCHG[0]));
 
 
 
