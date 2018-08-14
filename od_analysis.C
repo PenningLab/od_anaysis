@@ -76,7 +76,11 @@ void od_analysis(){
 //  TH1D* h_quadscatter_s1Area_phd = new TH1D("quadscatter_s1Area_phd", "quadscatter_s1Area_phd", 10000, 0, 10000);
 //  TH1D* h_quintscatter_s1Area_phd = new TH1D("quintscatter_s1Area_phd", "quintscatter_s1Area_phd", 10000, 0, 10000);
  
-   TH1D* h_pulsewidth_TPCHG = new TH1D("pulsewidth_TPCHG","pulsewidth_TPCHG",10000,0,10000);
+   TH1D* h_s1pulsewidth_TPCHG = new TH1D("s1pulsewidth_TPCHG","s1pulsewidth_TPCHG",10000,0,10000);
+   TH1D* h_s2pulsewidth_TPCHG = new TH1D("s2pulsewidth_TPCHG","s2pulsewidth_TPCHG",10000,0,10000);
+
+   TH1D* h_pulsearea_nos2_TPCHG = new TH1D("pulsearea_nos2_TPCHG","pulsearea_nos2_TPCHG",10000,0,10000);
+   TH1D* h_pulsearea_yess2_TPCHG = new TH1D("pulsearea_yess2_TPCHG","pulsearea_yess2_TPCHG",10000,0,10000);
 
   //------------------------------------------------
   // Main event loop
@@ -92,24 +96,54 @@ void od_analysis(){
     processed_events++;
     evt->GetEntry(n);
 
+   for (int lop = 0; lop < evt->singlescatter_s1Area_phd.size(); lop++){
     if(evt->nSingleScatters>0){
       if (evt->nSingleScatters>1) cout<<"WARNING, nSingleScatters>1"<<endl;
-      h_singlescatter_s1Area_phd->Fill(evt->singlescatter_s1Area_phd[0]);
+      h_singlescatter_s1Area_phd->Fill(evt->singlescatter_s1Area_phd[lop]);
     }
+   }
+   for (int lop = 0; lop < evt->multiplescatter_s1Area_phd.size(); lop++){
    if(evt->nMultipleScatters>0){
       if (evt->nMultipleScatters>1) cout<<"It's more than 1 in the nMultipleScatters"<<endl;
-      h_multiplescatter_s1Area_phd->Fill(evt->multiplescatter_s1Area_phd[0]);
+      h_multiplescatter_s1Area_phd->Fill(evt->multiplescatter_s1Area_phd[lop]);
     }//int nevents
+    }
 
   if ((evt->pulseStartTime_ns_TPCHG.size()) >= 1) {
-    int start = evt->pulseStartTime_ns_TPCHG[0];
-    int end = evt->pulseEndTime_ns_TPCHG[0];
-    int diff = end - start;
+//    int start = evt->pulseStartTime_ns_TPCHG[0];
+//    int end = evt->pulseEndTime_ns_TPCHG[0];
+//    int diff = end - start;
+//   cout<< evt->singlescatter_s1Area_phd.size()<<endl;
+//   cout<< evt->multiplescatter_s1Area_phd.size()<<endl;
 //   cout<< evt->pulseStartTime_ns_TPCHG.size()<<endl;
-   h_pulsewidth_TPCHG->Fill(diff);
 //    cout << start << endl;
 //    cout << end << endl;
+//    cout<< evt->pulseArea_phd_TPCHG[0]<<endl;
+
 //    cout << "" << endl;
+//    cout << evt->s1Probability_TPCHG[0] << endl;
+//    cout << evt->s2Probability_TPCHG[0] << endl;
+   for (int lop = 0; lop < (evt->pulseStartTime_ns_TPCHG.size()-1); lop++) {
+    int start = evt->pulseStartTime_ns_TPCHG[lop];
+    int end = evt->pulseEndTime_ns_TPCHG[lop];
+    int diff = end - start;
+
+
+    if (evt->s1Probability_TPCHG[0] > 0) {
+	h_s1pulsewidth_TPCHG->Fill(diff);
+	}
+    else {
+	if (evt->s2Probability_TPCHG[0] > 0) {
+		h_s2pulsewidth_TPCHG->Fill(diff);
+		h_pulsearea_yess2_TPCHG->Fill(evt->pulseArea_phd_TPCHG[lop]);
+		}
+	else {
+		h_pulsearea_nos2_TPCHG->Fill(evt->pulseArea_phd_TPCHG[lop]);
+	}
+}
+   }
+
+
     }
 
 
