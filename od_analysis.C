@@ -70,7 +70,7 @@ void od_analysis(){
 
   //define histos
   TH1D* h_singlescatter_s1Area_phd = new TH1D("singlescatter_s1Area_phd", "singlescatter_s1Area_phd", 10000, 0, 10000);
-//  TH1D* h_multiplescatter_s1Area_phd = new TH1D("multiplescatter_s1Area_phd", "multiplescatter_s1Area_phd", 10000, 0, 10000);
+  TH1D* h_multiplescatter_s1Area_phd = new TH1D("multiplescatter_s1Area_phd", "multiplescatter_s1Area_phd", 10000, 0, 10000);
 //  TH1D* h_doublescatter_s1Area_phd = new TH1D("doublescatter_s1Area_phd", "doublescatter_s1Area_phd", 10000, 0, 10000);
 //  TH1D* h_triplescatter_s1Area_phd = new TH1D("triplescatter_s1Area_phd", "triplescatter_s1Area_phd", 10000, 0, 10000);
 //  TH1D* h_quadscatter_s1Area_phd = new TH1D("quadscatter_s1Area_phd", "quadscatter_s1Area_phd", 10000, 0, 10000);
@@ -126,6 +126,10 @@ TH2D* h_area_versus_time_total = new TH2D("area_vs_time_total","area_vs_time_tot
 TH2D* h_area_versus_time_s1 = new TH2D("area_vs_time_s1","area_vs_time_s1",2000,0,2000,300,0,3000);
 TH2D* h_area_versus_time_s2 = new TH2D("area_vs_time_s2","area_vs_time_total",2000,0,2000,300,0,3000);
 TH2D* h_area_versus_time_other = new TH2D("area_vs_time_other","area_vs_time_total",2000,0,2000,300,0,3000);
+
+TH2D* h_logxx_vs_logyy_total = new TH2D("logxx_vs_logyy_total","logxx_vs_logyy_total",100,-3.5,0.5,100,-5.5,0.5);
+TH2D* h_logxx_vs_logyy_single = new TH2D("logxx_vs_logyy_single","logxx_vs_logyy_single",100,-3.5,0.5,100,-5.5,0.5);
+TH2D* h_logxx_vs_logyy_multiple = new TH2D("logxx_vs_logyy_multiple","logxx_vs_logyy_multiple",100,-3.5,0.5,100,-5.5,0.5);
 
 
 
@@ -280,6 +284,7 @@ TH2D* h_area_versus_time_other = new TH2D("area_vs_time_other","area_vs_time_tot
 	}
 
 
+
 	for (int p=0; p<maxS1pulseID; ++p) {
 
 		if (evt->s2Probability_TPCHG[p] == 1 ||
@@ -289,19 +294,6 @@ TH2D* h_area_versus_time_other = new TH2D("area_vs_time_other","area_vs_time_tot
 			continue;
 		}
 
-	}
-
-	if (maxS2pulseID != -1 && subS2pulseID == -1) {
-		s1pulseID = maxS1pulseID;
-		s2pulseID = maxS2pulseID;
-//		fill single scatters here
-		h_singlescatter_s1Area_phd->Fill(evt->pulseArea_phd_TPCHG[maxS1pulseID]);
-		continue;
-	}
-
-
-	if (subS2pulseID == -1) {
-		continue;
 	}
 
 	const float x1 = 1e-1;
@@ -318,7 +310,27 @@ TH2D* h_area_versus_time_other = new TH2D("area_vs_time_other","area_vs_time_tot
 	const float length = evt->areaFractionTime95_ns_TPCHG[subS2pulseID] - evt->areaFractionTime5_ns_TPCHG[subS2pulseID];
 	const float height = evt->peakAmp_TPCHG[subS2pulseID];
 	const float yy = height/length;
+
+//	cout << TMath::Log10(xx) << "	" << TMath::Log10(yy) << endl;
+	h_logxx_vs_logyy_total->Fill(TMath::Log10(xx),TMath::Log10(yy));
+
+	if (maxS2pulseID != -1 && subS2pulseID == -1) {
+		s1pulseID = maxS1pulseID;
+		s2pulseID = maxS2pulseID;
+//		fill single scatters here
+		h_singlescatter_s1Area_phd->Fill(evt->pulseArea_phd_TPCHG[maxS1pulseID]);
+		h_logxx_vs_logyy_single->Fill(TMath::Log10(xx),TMath::Log10(yy));
+		continue;
+	}
+
+
+	if (subS2pulseID == -1) {
+		continue;
+	}
+
 	if (TMath::Log10(yy) > m * TMath::Log10(xx) + b) {
+		h_multiplescatter_s1Area_phd->Fill(evt->pulseArea_phd_TPCHG[maxS1pulseID]);
+		h_logxx_vs_logyy_multiple->Fill(TMath::Log10(xx),TMath::Log10(yy));
 		continue;
 	}
 
@@ -326,7 +338,7 @@ TH2D* h_area_versus_time_other = new TH2D("area_vs_time_other","area_vs_time_tot
 	s2pulseID = maxS2pulseID;
 	//its a single scatter if it hasn't brokent the loop yet
 	h_singlescatter_s1Area_phd->Fill(evt->pulseArea_phd_TPCHG[maxS1pulseID]);
-
+	h_logxx_vs_logyy_single->Fill(TMath::Log10(xx),TMath::Log10(yy));
 
 
 //   for (int lop = 0; lop < evt->singlescatter_s1Area_phd.size(); lop++){
